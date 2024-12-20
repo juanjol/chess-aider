@@ -145,11 +145,22 @@ class Ajedrez {
         });
 
         document.getElementById('reiniciar').addEventListener('click', () => {
+            // Mostrar configuración inicial con valores actuales
+            document.getElementById('nombreBlancas').value = this.nombreJugadores.blancas;
+            document.getElementById('nombreNegras').value = this.nombreJugadores.negras;
+            document.getElementById('tiempoBlancas').value = Math.floor(this.tiempoInicial.blancas / 60);
+            document.getElementById('tiempoNegras').value = Math.floor(this.tiempoInicial.negras / 60);
+            
+            // Ocultar juego y mostrar configuración
+            document.getElementById('contenedorJuego').style.display = 'none';
+            document.getElementById('configuracionInicial').style.display = 'block';
+            
+            // Limpiar el estado del juego
+            clearInterval(this.temporizador);
             this.tablero.innerHTML = '';
-            this.inicializarTablero();
             this.turno = 'blancas';
-            this.actualizarTurno();
-            this.reiniciarTemporizador();
+            this.piezasCapturadas = { blancas: [], negras: [] };
+            this.actualizarPiezasCapturadas();
         });
     }
 
