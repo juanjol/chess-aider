@@ -105,15 +105,24 @@ button:hover {
 }
 
 .piezas-capturadas {
-    width: 70px;
-    min-height: 560px;
+    width: 300px;
+    height: 50px;
     background-color: var(--casilla-clara);
     border: 5px solid var(--borde);
     padding: 10px;
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     gap: 5px;
     font-size: 30px;
+    margin: 10px;
+}
+
+#piezasCapturadasNegras {
+    align-self: flex-start;
+}
+
+#piezasCapturadasBlancas {
+    align-self: flex-end;
 }
 
 .temporizadores {

@@ -249,14 +249,20 @@ class Ajedrez {
         });
     }
     iniciarTemporizador() {
+        if (this.temporizador) {
+            clearInterval(this.temporizador);
+        }
         this.temporizador = setInterval(() => {
-            this.tiempoRestante[this.turno]--;
-            this.actualizarVisualizacionTemporizador();
-            
-            if (this.tiempoRestante[this.turno] <= 0) {
-                this.finalizarPartidaPorTiempo();
+            if (this.tiempoRestante[this.turno] > 0) {
+                this.tiempoRestante[this.turno]--;
+                this.actualizarVisualizacionTemporizador();
+                
+                if (this.tiempoRestante[this.turno] <= 0) {
+                    this.finalizarPartidaPorTiempo();
+                }
             }
         }, 1000);
+        this.actualizarVisualizacionTemporizador();
     }
 
     cambiarTemporizador() {
@@ -282,10 +288,15 @@ class Ajedrez {
             return `${minutos.toString().padStart(2, '0')}:${segs.toString().padStart(2, '0')}`;
         };
 
-        document.getElementById('tiempoBlancas').textContent = 
-            `${this.nombreJugadores.blancas}: ${formatearTiempo(this.tiempoRestante.blancas)}`;
-        document.getElementById('tiempoNegras').textContent = 
-            `${this.nombreJugadores.negras}: ${formatearTiempo(this.tiempoRestante.negras)}`;
+        const tiempoBlancasElement = document.querySelector('.temporizador:first-child span:last-child');
+        const tiempoNegrasElement = document.querySelector('.temporizador:last-child span:last-child');
+        const nombreBlancasElement = document.querySelector('.temporizador:first-child span:first-child');
+        const nombreNegrasElement = document.querySelector('.temporizador:last-child span:first-child');
+
+        tiempoBlancasElement.textContent = formatearTiempo(this.tiempoRestante.blancas);
+        tiempoNegrasElement.textContent = formatearTiempo(this.tiempoRestante.negras);
+        nombreBlancasElement.textContent = `${this.nombreJugadores.blancas}:`;
+        nombreNegrasElement.textContent = `${this.nombreJugadores.negras}:`;
     }
 
     finalizarPartidaPorTiempo() {
