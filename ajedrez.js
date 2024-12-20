@@ -43,6 +43,51 @@ class Ajedrez {
     }
 
     configurarEventos() {
+        let piezaArrastrada = null;
+        let casillaOrigen = null;
+
+        const manejarInicioDrag = (e) => {
+            const casilla = e.target.closest('.casilla');
+            if (!casilla) return;
+
+            const pieza = casilla.textContent;
+            const esBlanca = '♔♕♖♗♘♙'.includes(pieza);
+            const esNegra = '♚♛♜♝♞♟'.includes(pieza);
+
+            if ((this.turno === 'blancas' && esBlanca) || (this.turno === 'negras' && esNegra)) {
+                piezaArrastrada = casilla;
+                casillaOrigen = casilla;
+                this.seleccionarPieza(casilla);
+                casilla.classList.add('arrastrando');
+            }
+        };
+
+        const manejarDrag = (e) => {
+            if (!piezaArrastrada) return;
+            e.preventDefault();
+        };
+
+        const manejarFinDrag = (e) => {
+            if (!piezaArrastrada) return;
+
+            const casilla = e.target.closest('.casilla');
+            if (casilla && casilla !== casillaOrigen) {
+                this.moverPieza(casillaOrigen, casilla);
+            }
+
+            piezaArrastrada.classList.remove('arrastrando');
+            piezaArrastrada = null;
+            casillaOrigen = null;
+            this.limpiarSeleccion();
+        };
+
+        // Configurar eventos de drag and drop
+        this.tablero.addEventListener('mousedown', manejarInicioDrag);
+        this.tablero.addEventListener('dragstart', (e) => e.preventDefault());
+        document.addEventListener('mousemove', manejarDrag);
+        document.addEventListener('mouseup', manejarFinDrag);
+
+        // Mantener el evento de click para compatibilidad
         this.tablero.addEventListener('click', (e) => {
             const casilla = e.target.closest('.casilla');
             if (!casilla) return;
@@ -52,7 +97,6 @@ class Ajedrez {
             const esNegra = '♚♛♜♝♞♟'.includes(pieza);
 
             if (this.seleccionada) {
-                // Mover pieza
                 if (casilla !== this.seleccionada) {
                     this.moverPieza(this.seleccionada, casilla);
                 }

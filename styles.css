@@ -37,6 +37,16 @@ header {
     font-size: 45px;
     cursor: pointer;
     transition: background-color 0.3s;
+    user-select: none;
+}
+
+.pieza-arrastrable {
+    cursor: grab;
+}
+
+.arrastrando {
+    cursor: grabbing;
+    opacity: 0.6;
 }
 
 .clara { background-color: var(--casilla-clara); }
