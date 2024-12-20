@@ -3,6 +3,7 @@ class Ajedrez {
         this.tablero = document.getElementById('tablero');
         this.turno = 'blancas';
         this.tabletMode = true;
+        this.peonAPromocionar = null;
         document.body.classList.add('tablet-mode');
         this.seleccionada = null;
         this.matrizTablero = Array(8).fill().map(() => Array(8).fill(''));
@@ -230,6 +231,21 @@ class Ajedrez {
             const columnaOrigen = parseInt(origen.dataset.columna);
             const filaDestino = parseInt(destino.dataset.fila);
             const columnaDestino = parseInt(destino.dataset.columna);
+
+            // Verificar si es un peón que llega al final
+            const pieza = this.matrizTablero[filaOrigen][columnaOrigen];
+            const esBlanca = '♔♕♖♗♘♙'.includes(pieza);
+            if ((pieza === '♙' && filaDestino === 0) || (pieza === '♟' && filaDestino === 7)) {
+                this.mostrarPopupPromocion(esBlanca, filaDestino, columnaDestino);
+                this.peonAPromocionar = {
+                    origen: origen,
+                    destino: destino,
+                    fila: filaDestino,
+                    columna: columnaDestino,
+                    esBlanca: esBlanca
+                };
+                return;
+            }
 
             // Simular el movimiento para verificar si deja al rey en jaque
             const tableroTemporal = JSON.parse(JSON.stringify(this.matrizTablero));
@@ -481,6 +497,80 @@ class Ajedrez {
         this.inicializarTablero();
         this.turno = 'blancas';
         this.actualizarTurno();
+    }
+
+    mostrarPopupPromocion(esBlanca, fila, columna) {
+        const popup = document.getElementById('popupPromocion');
+        const opciones = popup.querySelectorAll('.opcion-promocion');
+        
+        // Configurar las piezas en el popup
+        const piezas = esBlanca ? ['♕', '♖', '♗', '♘'] : ['♛', '♜', '♝', '♞'];
+        opciones.forEach((opcion, index) => {
+            opcion.textContent = piezas[index];
+            if (!esBlanca) {
+                opcion.classList.add('pieza-negra');
+            } else {
+                opcion.classList.remove('pieza-negra');
+            }
+            
+            // Añadir evento click
+            opcion.onclick = () => this.promocionarPeon(piezas[index]);
+        });
+        
+        popup.style.display = 'block';
+    }
+
+    promocionarPeon(nuevaPieza) {
+        if (!this.peonAPromocionar) return;
+        
+        const { origen, destino, fila, columna, esBlanca } = this.peonAPromocionar;
+        
+        // Actualizar la matriz y el DOM
+        this.matrizTablero[fila][columna] = nuevaPieza;
+        
+        // Realizar el movimiento original
+        if (destino.textContent) {
+            const piezaCapturada = destino.textContent;
+            const color = this.turno === 'blancas' ? 'blancas' : 'negras';
+            this.piezasCapturadas[color].push(piezaCapturada);
+            this.actualizarPiezasCapturadas();
+        }
+        
+        // Limpiar la casilla de origen
+        this.matrizTablero[parseInt(origen.dataset.fila)][parseInt(origen.dataset.columna)] = '';
+        origen.innerHTML = '';
+        
+        // Colocar la nueva pieza
+        const nuevaPiezaSpan = document.createElement('span');
+        nuevaPiezaSpan.textContent = nuevaPieza;
+        if (!esBlanca) {
+            nuevaPiezaSpan.classList.add('pieza-negra');
+        }
+        destino.innerHTML = '';
+        destino.appendChild(nuevaPiezaSpan);
+        
+        // Ocultar el popup
+        document.getElementById('popupPromocion').style.display = 'none';
+        
+        // Cambiar el turno
+        this.turno = this.turno === 'blancas' ? 'negras' : 'blancas';
+        this.actualizarTurno();
+        
+        // Reiniciar el estado
+        this.peonAPromocionar = null;
+        
+        // Verificar jaque
+        const esBlancaOponente = this.turno === 'blancas';
+        if (MovimientosPieza.estaEnJaque(this.matrizTablero, esBlancaOponente)) {
+            if (this.esJaqueMate()) {
+                document.getElementById('avisoMate').style.display = 'block';
+                const ganador = this.turno === 'negras' ? 'Blancas' : 'Negras';
+                setTimeout(() => alert(`¡Jaque Mate! Ganan las ${ganador}`), 100);
+                this.juegoTerminado = true;
+            } else {
+                document.getElementById('avisoJaque').style.display = 'block';
+            }
+        }
     }
 }
 

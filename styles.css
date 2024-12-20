@@ -277,6 +277,51 @@ button:hover {
     display: none;
 }
 
+.popup-promocion {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: var(--casilla-clara);
+    border: 5px solid var(--borde);
+    padding: 20px;
+    border-radius: 10px;
+    display: none;
+    z-index: 2000;
+    box-shadow: 0 0 20px rgba(0,0,0,0.5);
+}
+
+.popup-promocion h3 {
+    text-align: center;
+    margin-top: 0;
+    color: #333;
+}
+
+.opciones-promocion {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.opcion-promocion {
+    font-size: 40px;
+    width: 60px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--casilla-oscura);
+    border: 2px solid var(--borde);
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.opcion-promocion:hover {
+    background-color: #8b6b43;
+}
+
 .temporizadores {
     display: flex;
     justify-content: center;
