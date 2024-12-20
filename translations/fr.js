@@ -18,7 +18,8 @@ const translations = {
     time_remaining: "Temps restant",
     captured_pieces: "Pièces capturées",
     player_1: "Joueur 1",
-    player_2: "Joueur 2"
+    player_2: "Joueur 2",
+    fullscreen: "Plein écran"
 };
 
 export default translations;

@@ -84,6 +84,15 @@ class Ajedrez {
             document.body.classList.toggle('tablet-mode', this.tabletMode);
         });
 
+        // Configurar botón de pantalla completa
+        document.getElementById('pantallaCompleta').addEventListener('click', () => {
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen();
+            } else {
+                document.exitFullscreen();
+            }
+        });
+
         document.getElementById('comenzarPartida').addEventListener('click', () => {
             // Obtener configuración
             this.nombreJugadores.blancas = document.getElementById('nombreBlancas').value;

@@ -18,7 +18,8 @@ const translations = {
     time_remaining: "Verbleibende Zeit",
     captured_pieces: "Geschlagene Figuren",
     player_1: "Spieler 1",
-    player_2: "Spieler 2"
+    player_2: "Spieler 2",
+    fullscreen: "Vollbild"
 };
 
 export default translations;
