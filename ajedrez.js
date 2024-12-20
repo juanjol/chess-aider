@@ -180,15 +180,24 @@ class Ajedrez {
 
     moverPieza(origen, destino) {
         if (destino.classList.contains('movimiento-posible')) {
-            // Guardar estado anterior para verificar jaque mate
-            const estadoAnterior = JSON.parse(JSON.stringify(this.matrizTablero));
-            
-            // Cambiar el temporizador al mover
-            this.cambiarTemporizador();
             const filaOrigen = parseInt(origen.dataset.fila);
             const columnaOrigen = parseInt(origen.dataset.columna);
             const filaDestino = parseInt(destino.dataset.fila);
             const columnaDestino = parseInt(destino.dataset.columna);
+
+            // Simular el movimiento para verificar si deja al rey en jaque
+            const tableroTemporal = JSON.parse(JSON.stringify(this.matrizTablero));
+            tableroTemporal[filaDestino][columnaDestino] = tableroTemporal[filaOrigen][columnaOrigen];
+            tableroTemporal[filaOrigen][columnaOrigen] = '';
+
+            const esBlanca = '♔♕♖♗♘♙'.includes(this.matrizTablero[filaOrigen][columnaOrigen]);
+            if (MovimientosPieza.estaEnJaque(tableroTemporal, esBlanca)) {
+                alert('¡Movimiento inválido! Tu rey quedaría en jaque');
+                return;
+            }
+
+            // Cambiar el temporizador al mover
+            this.cambiarTemporizador();
             
             // Capturar pieza si existe
             if (destino.textContent) {
@@ -318,10 +327,29 @@ class Ajedrez {
         const pieza = this.matrizTablero[fila][columna];
         const esBlanca = '♔♕♖♗♘♙'.includes(pieza);
         
-        let movimientos = [];
+        // Obtener todos los movimientos posibles
+        const movimientos = MovimientosPieza.obtenerMovimientosPieza(fila, columna, esBlanca, this.matrizTablero);
         
-        switch (pieza) {
-            case '♙':
+        // Filtrar movimientos que dejarían al rey en jaque
+        const movimientosLegales = movimientos.filter(([nuevaFila, nuevaColumna]) => {
+            const tableroTemporal = JSON.parse(JSON.stringify(this.matrizTablero));
+            tableroTemporal[nuevaFila][nuevaColumna] = tableroTemporal[fila][columna];
+            tableroTemporal[fila][columna] = '';
+            return !MovimientosPieza.estaEnJaque(tableroTemporal, esBlanca);
+        });
+
+        // Mostrar los movimientos legales
+        movimientosLegales.forEach(([f, c]) => {
+            const casillaPosible = this.tablero.children[f * 8 + c];
+            casillaPosible.classList.add('movimiento-posible');
+        });
+
+        // Si es el turno correcto y el rey está en jaque, mostrar una alerta
+        if ((this.turno === 'blancas' && esBlanca) || (this.turno === 'negras' && !esBlanca)) {
+            if (MovimientosPieza.estaEnJaque(this.matrizTablero, esBlanca)) {
+                alert('¡Estás en jaque!');
+            }
+        }
             case '♟':
                 movimientos = MovimientosPieza.obtenerMovimientosPeon(fila, columna, esBlanca, this.matrizTablero);
                 break;

@@ -135,4 +135,65 @@ class MovimientosPieza {
     static esPiezaEnemiga(pieza, esBlanca) {
         return esBlanca ? '♚♛♜♝♞♟'.includes(pieza) : '♔♕♖♗♘♙'.includes(pieza);
     }
+
+    static esRey(pieza) {
+        return pieza === '♔' || pieza === '♚';
+    }
+
+    static obtenerPosicionRey(tablero, esBlanca) {
+        const rey = esBlanca ? '♔' : '♚';
+        for (let i = 0; i < 8; i++) {
+            for (let j = 0; j < 8; j++) {
+                if (tablero[i][j] === rey) {
+                    return [i, j];
+                }
+            }
+        }
+        return null;
+    }
+
+    static estaEnJaque(tablero, esBlanca) {
+        const posRey = this.obtenerPosicionRey(tablero, esBlanca);
+        if (!posRey) return false;
+
+        // Verificar si alguna pieza enemiga puede atacar al rey
+        for (let i = 0; i < 8; i++) {
+            for (let j = 0; j < 8; j++) {
+                const pieza = tablero[i][j];
+                if (!pieza || this.esPiezaEnemiga(pieza, !esBlanca)) continue;
+
+                const movimientos = this.obtenerMovimientosPieza(i, j, !esBlanca, tablero);
+                if (movimientos.some(([f, c]) => f === posRey[0] && c === posRey[1])) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    static obtenerMovimientosPieza(fila, columna, esBlanca, tablero) {
+        const pieza = tablero[fila][columna];
+        switch (pieza) {
+            case '♙':
+            case '♟':
+                return this.obtenerMovimientosPeon(fila, columna, esBlanca, tablero);
+            case '♖':
+            case '♜':
+                return this.obtenerMovimientosTorre(fila, columna, esBlanca, tablero);
+            case '♗':
+            case '♝':
+                return this.obtenerMovimientosAlfil(fila, columna, esBlanca, tablero);
+            case '♘':
+            case '♞':
+                return this.obtenerMovimientosCaballo(fila, columna, esBlanca, tablero);
+            case '♕':
+            case '♛':
+                return this.obtenerMovimientosReina(fila, columna, esBlanca, tablero);
+            case '♔':
+            case '♚':
+                return this.obtenerMovimientosRey(fila, columna, esBlanca, tablero);
+            default:
+                return [];
+        }
+    }
 }
