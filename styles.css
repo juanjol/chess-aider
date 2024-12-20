@@ -57,7 +57,7 @@ header {
 }
 
 .seleccionada {
-    background-color: #7b61ff !important;
+    background-color: rgba(0, 0, 0, 0.3) !important;
 }
 
 .movimiento-posible {
