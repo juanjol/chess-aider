@@ -120,17 +120,17 @@ class Ajedrez {
             const casilla = e.target.closest('.casilla');
             if (!casilla) return;
 
-            const pieza = casilla.textContent;
-            const esBlanca = '♔♕♖♗♘♙'.includes(pieza);
-            const esNegra = '♚♛♜♝♞♟'.includes(pieza);
+            const piezaTexto = casilla.textContent;
+            const esBlanca = '♔♕♖♗♘♙'.includes(piezaTexto);
+            const esNegra = '♚♛♜♝♞♟'.includes(piezaTexto);
 
             if ((this.turno === 'blancas' && esBlanca) || (this.turno === 'negras' && esNegra)) {
-                const pieza = document.createElement('div');
-                pieza.textContent = casilla.textContent;
-                pieza.className = 'pieza-arrastrada' + (casilla.firstChild?.classList.contains('pieza-negra') ? ' pieza-negra' : '');
-                document.body.appendChild(pieza);
+                const piezaElement = document.createElement('div');
+                piezaElement.textContent = casilla.textContent;
+                piezaElement.className = 'pieza-arrastrada' + (casilla.firstChild?.classList.contains('pieza-negra') ? ' pieza-negra' : '');
+                document.body.appendChild(piezaElement);
                 
-                piezaArrastrada = pieza;
+                piezaArrastrada = piezaElement;
                 casillaOrigen = casilla;
                 this.seleccionarPieza(casilla);
                 casilla.style.opacity = '0.3';
@@ -252,8 +252,8 @@ class Ajedrez {
             tableroTemporal[filaDestino][columnaDestino] = tableroTemporal[filaOrigen][columnaOrigen];
             tableroTemporal[filaOrigen][columnaOrigen] = '';
 
-            const esBlanca = '♔♕♖♗♘♙'.includes(this.matrizTablero[filaOrigen][columnaOrigen]);
-            if (MovimientosPieza.estaEnJaque(tableroTemporal, esBlanca)) {
+            const esBlancaTemporal = '♔♕♖♗♘♙'.includes(this.matrizTablero[filaOrigen][columnaOrigen]);
+            if (MovimientosPieza.estaEnJaque(tableroTemporal, esBlancaTemporal)) {
                 alert('¡Movimiento inválido! Tu rey quedaría en jaque');
                 return;
             }
