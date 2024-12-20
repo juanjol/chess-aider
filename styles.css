@@ -42,8 +42,8 @@ header {
     background-color: #45a049;
 }
 
-.tablet-mode .pieza-negra {
-    transform: rotate(180deg);
+.tablet-mode .casilla .pieza-negra {
+    transform: none;
 }
 
 .tablet-mode .info-jugador-negro {
@@ -94,6 +94,10 @@ header {
     z-index: 1000;
     transform: translate(-50%, -50%);
     font-size: 45px;
+}
+
+.tablet-mode .pieza-arrastrada.pieza-negra {
+    transform: translate(-50%, -50%);
 }
 
 .clara { background-color: var(--casilla-clara); }
