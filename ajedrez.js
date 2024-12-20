@@ -65,6 +65,10 @@ class Ajedrez {
         const manejarDrag = (e) => {
             if (!piezaArrastrada) return;
             e.preventDefault();
+            
+            // Actualizar la posición de la pieza arrastrada
+            piezaArrastrada.style.left = e.clientX + 'px';
+            piezaArrastrada.style.top = e.clientY + 'px';
         };
 
         const manejarFinDrag = (e) => {
@@ -76,6 +80,8 @@ class Ajedrez {
             }
 
             piezaArrastrada.classList.remove('arrastrando');
+            piezaArrastrada.style.left = '';
+            piezaArrastrada.style.top = '';
             piezaArrastrada = null;
             casillaOrigen = null;
             this.limpiarSeleccion();

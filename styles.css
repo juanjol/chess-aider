@@ -47,6 +47,11 @@ header {
 .arrastrando {
     cursor: grabbing;
     opacity: 0.6;
+    position: fixed;
+    pointer-events: none;
+    z-index: 1000;
+    transform: translate(-50%, -50%);
+    font-size: 45px;
 }
 
 .clara { background-color: var(--casilla-clara); }
