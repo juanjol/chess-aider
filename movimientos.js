@@ -108,8 +108,9 @@ class MovimientosPieza {
         ];
     }
 
-    static obtenerMovimientosRey(fila, columna, esBlanca, tablero) {
+    static obtenerMovimientosRey(fila, columna, esBlanca, tablero, permitirEnroque = true) {
         const movimientos = [];
+        // Movimientos normales del rey
         for (let df = -1; df <= 1; df++) {
             for (let dc = -1; dc <= 1; dc++) {
                 if (df === 0 && dc === 0) continue;
@@ -125,7 +126,83 @@ class MovimientosPieza {
                 }
             }
         }
+
+        // Verificar enroques si está permitido
+        if (permitirEnroque) {
+            const filaRey = esBlanca ? 7 : 0;
+            if (fila === filaRey && columna === 4) {
+                // Enroque corto
+                if (this.puedeEnrocarCorto(tablero, esBlanca)) {
+                    movimientos.push([filaRey, 6]);
+                }
+                // Enroque largo
+                if (this.puedeEnrocarLargo(tablero, esBlanca)) {
+                    movimientos.push([filaRey, 2]);
+                }
+            }
+        }
+        
         return movimientos;
+    }
+
+    static puedeEnrocarCorto(tablero, esBlanca) {
+        const fila = esBlanca ? 7 : 0;
+        const rey = esBlanca ? '♔' : '♚';
+        const torre = esBlanca ? '♖' : '♜';
+        
+        // Verificar posiciones iniciales
+        if (tablero[fila][4] !== rey || tablero[fila][7] !== torre) return false;
+        
+        // Verificar casillas vacías
+        if (tablero[fila][5] || tablero[fila][6]) return false;
+        
+        // Verificar que el rey no esté en jaque
+        if (this.estaEnJaque(tablero, esBlanca)) return false;
+        
+        // Verificar que las casillas por las que pasa el rey no estén amenazadas
+        const tableroTemp = JSON.parse(JSON.stringify(tablero));
+        tableroTemp[fila][4] = '';
+        
+        // Verificar casilla f1/f8
+        tableroTemp[fila][5] = rey;
+        if (this.estaEnJaque(tableroTemp, esBlanca)) return false;
+        tableroTemp[fila][5] = '';
+        
+        // Verificar casilla g1/g8
+        tableroTemp[fila][6] = rey;
+        if (this.estaEnJaque(tableroTemp, esBlanca)) return false;
+        
+        return true;
+    }
+
+    static puedeEnrocarLargo(tablero, esBlanca) {
+        const fila = esBlanca ? 7 : 0;
+        const rey = esBlanca ? '♔' : '♚';
+        const torre = esBlanca ? '♖' : '♜';
+        
+        // Verificar posiciones iniciales
+        if (tablero[fila][4] !== rey || tablero[fila][0] !== torre) return false;
+        
+        // Verificar casillas vacías
+        if (tablero[fila][1] || tablero[fila][2] || tablero[fila][3]) return false;
+        
+        // Verificar que el rey no esté en jaque
+        if (this.estaEnJaque(tablero, esBlanca)) return false;
+        
+        // Verificar que las casillas por las que pasa el rey no estén amenazadas
+        const tableroTemp = JSON.parse(JSON.stringify(tablero));
+        tableroTemp[fila][4] = '';
+        
+        // Verificar casilla d1/d8
+        tableroTemp[fila][3] = rey;
+        if (this.estaEnJaque(tableroTemp, esBlanca)) return false;
+        tableroTemp[fila][3] = '';
+        
+        // Verificar casilla c1/c8
+        tableroTemp[fila][2] = rey;
+        if (this.estaEnJaque(tableroTemp, esBlanca)) return false;
+        
+        return true;
     }
 
     static dentroTablero(fila, columna) {

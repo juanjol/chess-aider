@@ -231,6 +231,11 @@ class Ajedrez {
             const columnaOrigen = parseInt(origen.dataset.columna);
             const filaDestino = parseInt(destino.dataset.fila);
             const columnaDestino = parseInt(destino.dataset.columna);
+            
+            // Verificar si es un enroque
+            const piezaMovida = this.matrizTablero[filaOrigen][columnaOrigen];
+            const esRey = piezaMovida === '♔' || piezaMovida === '♚';
+            const esEnroque = esRey && Math.abs(columnaDestino - columnaOrigen) === 2;
 
             // Verificar si es un peón que llega al final
             const pieza = this.matrizTablero[filaOrigen][columnaOrigen];
@@ -273,7 +278,34 @@ class Ajedrez {
                 this.actualizarPiezasCapturadas();
             }
             
-            // Actualizar matriz y DOM
+            // Manejar enroque
+            if (esEnroque) {
+                const esEnroqueCorto = columnaDestino > columnaOrigen;
+                const fila = filaOrigen;
+                const columnaInicialTorre = esEnroqueCorto ? 7 : 0;
+                const columnaFinalTorre = esEnroqueCorto ? 5 : 3;
+                
+                // Mover torre
+                const torre = this.matrizTablero[fila][columnaInicialTorre];
+                this.matrizTablero[fila][columnaFinalTorre] = torre;
+                this.matrizTablero[fila][columnaInicialTorre] = '';
+                
+                // Actualizar DOM de la torre
+                const casillaInicialTorre = this.tablero.children[fila * 8 + columnaInicialTorre];
+                const casillaFinalTorre = this.tablero.children[fila * 8 + columnaFinalTorre];
+                const esNegraTorre = casillaInicialTorre.firstChild?.classList.contains('pieza-negra');
+                
+                const nuevaTorre = document.createElement('span');
+                nuevaTorre.textContent = torre;
+                if (esNegraTorre) {
+                    nuevaTorre.className = 'pieza-negra';
+                }
+                casillaFinalTorre.innerHTML = '';
+                casillaFinalTorre.appendChild(nuevaTorre);
+                casillaInicialTorre.innerHTML = '';
+            }
+
+            // Actualizar matriz y DOM para la pieza principal
             this.matrizTablero[filaDestino][columnaDestino] = this.matrizTablero[filaOrigen][columnaOrigen];
             this.matrizTablero[filaOrigen][columnaOrigen] = '';
             
