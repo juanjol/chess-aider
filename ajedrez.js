@@ -350,35 +350,6 @@ class Ajedrez {
                 alert('¡Estás en jaque!');
             }
         }
-            case '♟':
-                movimientos = MovimientosPieza.obtenerMovimientosPeon(fila, columna, esBlanca, this.matrizTablero);
-                break;
-            case '♖':
-            case '♜':
-                movimientos = MovimientosPieza.obtenerMovimientosTorre(fila, columna, esBlanca, this.matrizTablero);
-                break;
-            case '♗':
-            case '♝':
-                movimientos = MovimientosPieza.obtenerMovimientosAlfil(fila, columna, esBlanca, this.matrizTablero);
-                break;
-            case '♘':
-            case '♞':
-                movimientos = MovimientosPieza.obtenerMovimientosCaballo(fila, columna, esBlanca, this.matrizTablero);
-                break;
-            case '♕':
-            case '♛':
-                movimientos = MovimientosPieza.obtenerMovimientosReina(fila, columna, esBlanca, this.matrizTablero);
-                break;
-            case '♔':
-            case '♚':
-                movimientos = MovimientosPieza.obtenerMovimientosRey(fila, columna, esBlanca, this.matrizTablero);
-                break;
-        }
-
-        movimientos.forEach(([f, c]) => {
-            const casillaPosible = this.tablero.children[f * 8 + c];
-            casillaPosible.classList.add('movimiento-posible');
-        });
     }
     iniciarTemporizador() {
         if (this.temporizador) {
