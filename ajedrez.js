@@ -2,7 +2,8 @@ class Ajedrez {
     constructor() {
         this.tablero = document.getElementById('tablero');
         this.turno = 'blancas';
-        this.tabletMode = false;
+        this.tabletMode = true;
+        document.body.classList.add('tablet-mode');
         this.seleccionada = null;
         this.matrizTablero = Array(8).fill().map(() => Array(8).fill(''));
         this.configurarEventosIniciales();
@@ -80,8 +81,6 @@ class Ajedrez {
         document.getElementById('tabletMode').addEventListener('click', () => {
             this.tabletMode = !this.tabletMode;
             document.body.classList.toggle('tablet-mode', this.tabletMode);
-            document.getElementById('tabletMode').textContent = 
-                this.tabletMode ? 'Modo Normal' : 'Modo Tablet';
         });
 
         document.getElementById('comenzarPartida').addEventListener('click', () => {
