@@ -11,7 +11,8 @@ body {
     align-items: center;
     background-color: #f0f0f0;
     margin: 0;
-    min-height: 100vh;
+    height: 100vh;
+    overflow: hidden;
 }
 
 .panel-control {
@@ -65,10 +66,8 @@ body {
 .tablero {
     display: grid;
     grid-template-columns: repeat(8, 1fr);
-    width: 100vh;
-    height: 100vh;
-    max-width: 100vw;
-    max-height: 100vh;
+    width: 95vh;
+    height: 95vh;
     border: 10px solid var(--borde);
     box-shadow: 0 0 20px rgba(0,0,0,0.3);
 }
