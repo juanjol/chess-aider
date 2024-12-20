@@ -233,8 +233,17 @@ class Ajedrez {
             this.matrizTablero[filaDestino][columnaDestino] = this.matrizTablero[filaOrigen][columnaOrigen];
             this.matrizTablero[filaOrigen][columnaOrigen] = '';
             
-            destino.textContent = origen.textContent;
-            origen.textContent = '';
+            // Preservar la clase pieza-negra si es necesario
+            const esNegra = origen.firstChild?.classList.contains('pieza-negra');
+            origen.innerHTML = '';
+            
+            const nuevaPieza = document.createElement('span');
+            nuevaPieza.textContent = this.matrizTablero[filaDestino][columnaDestino];
+            if (esNegra) {
+                nuevaPieza.className = 'pieza-negra';
+            }
+            destino.innerHTML = '';
+            destino.appendChild(nuevaPieza);
             
             // Verificar si el movimiento pone en jaque al oponente
             const esBlancaOponente = this.turno === 'negras';
