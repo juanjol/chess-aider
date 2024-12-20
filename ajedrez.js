@@ -180,6 +180,9 @@ class Ajedrez {
 
     moverPieza(origen, destino) {
         if (destino.classList.contains('movimiento-posible')) {
+            // Guardar estado anterior para verificar jaque mate
+            const estadoAnterior = JSON.parse(JSON.stringify(this.matrizTablero));
+            
             // Cambiar el temporizador al mover
             this.cambiarTemporizador();
             const filaOrigen = parseInt(origen.dataset.fila);
@@ -204,7 +207,97 @@ class Ajedrez {
             
             this.turno = this.turno === 'blancas' ? 'negras' : 'blancas';
             this.actualizarTurno();
+
+            // Verificar jaque mate después del movimiento
+            if (this.esJaqueMate()) {
+                const ganador = this.turno === 'blancas' ? 'Negras' : 'Blancas';
+                alert(`¡Jaque Mate! Ganan las ${ganador}`);
+                this.reiniciarJuego();
+            }
         }
+    }
+
+    esJaqueMate() {
+        const esBlanca = this.turno === 'blancas';
+        const rey = esBlanca ? '♔' : '♚';
+        
+        // Encontrar posición del rey
+        let posRey = null;
+        for (let i = 0; i < 8; i++) {
+            for (let j = 0; j < 8; j++) {
+                if (this.matrizTablero[i][j] === rey) {
+                    posRey = [i, j];
+                    break;
+                }
+            }
+            if (posRey) break;
+        }
+        
+        if (!posRey) return false;
+
+        // Verificar si hay algún movimiento legal para cualquier pieza del jugador actual
+        for (let i = 0; i < 8; i++) {
+            for (let j = 0; j < 8; j++) {
+                const pieza = this.matrizTablero[i][j];
+                if (!pieza) continue;
+                
+                const esBlancaPieza = '♔♕♖♗♘♙'.includes(pieza);
+                if (esBlancaPieza === esBlanca) {
+                    const movimientos = this.obtenerMovimientosLegales(i, j);
+                    if (movimientos.length > 0) {
+                        return false;
+                    }
+                }
+            }
+        }
+        
+        return true;
+    }
+
+    obtenerMovimientosLegales(fila, columna) {
+        const pieza = this.matrizTablero[fila][columna];
+        const esBlanca = '♔♕♖♗♘♙'.includes(pieza);
+        let movimientos = [];
+        
+        switch (pieza) {
+            case '♙':
+            case '♟':
+                movimientos = MovimientosPieza.obtenerMovimientosPeon(fila, columna, esBlanca, this.matrizTablero);
+                break;
+            case '♖':
+            case '♜':
+                movimientos = MovimientosPieza.obtenerMovimientosTorre(fila, columna, esBlanca, this.matrizTablero);
+                break;
+            case '♗':
+            case '♝':
+                movimientos = MovimientosPieza.obtenerMovimientosAlfil(fila, columna, esBlanca, this.matrizTablero);
+                break;
+            case '♘':
+            case '♞':
+                movimientos = MovimientosPieza.obtenerMovimientosCaballo(fila, columna, esBlanca, this.matrizTablero);
+                break;
+            case '♕':
+            case '♛':
+                movimientos = MovimientosPieza.obtenerMovimientosReina(fila, columna, esBlanca, this.matrizTablero);
+                break;
+            case '♔':
+            case '♚':
+                movimientos = MovimientosPieza.obtenerMovimientosRey(fila, columna, esBlanca, this.matrizTablero);
+                break;
+        }
+        
+        return movimientos;
+    }
+
+    reiniciarJuego() {
+        clearInterval(this.temporizador);
+        this.tablero.innerHTML = '';
+        this.inicializarTablero();
+        this.turno = 'blancas';
+        this.actualizarTurno();
+        this.piezasCapturadas = { blancas: [], negras: [] };
+        this.actualizarPiezasCapturadas();
+        this.reiniciarTemporizador();
     }
 
     actualizarPiezasCapturadas() {
