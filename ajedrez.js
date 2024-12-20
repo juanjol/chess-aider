@@ -172,8 +172,11 @@ class Ajedrez {
     }
 
     actualizarPiezasCapturadas() {
-        // Implementar visualización de piezas capturadas
-        console.log('Piezas capturadas:', this.piezasCapturadas);
+        const contenedorBlancas = document.getElementById('piezasCapturadasBlancas');
+        const contenedorNegras = document.getElementById('piezasCapturadasNegras');
+        
+        contenedorBlancas.innerHTML = this.piezasCapturadas.blancas.join('');
+        contenedorNegras.innerHTML = this.piezasCapturadas.negras.join('');
     }
 
     actualizarTurno() {
