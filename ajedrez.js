@@ -7,6 +7,13 @@ class Ajedrez {
         this.inicializarTablero();
         this.configurarEventos();
         this.piezasCapturadas = { blancas: [], negras: [] };
+        this.tiempoInicial = 600; // 10 minutos en segundos
+        this.tiempoRestante = {
+            blancas: this.tiempoInicial,
+            negras: this.tiempoInicial
+        };
+        this.temporizador = null;
+        this.iniciarTemporizador();
     }
 
     inicializarTablero() {
@@ -61,6 +68,7 @@ class Ajedrez {
             this.inicializarTablero();
             this.turno = 'blancas';
             this.actualizarTurno();
+            this.reiniciarTemporizador();
         });
     }
 
@@ -80,6 +88,8 @@ class Ajedrez {
 
     moverPieza(origen, destino) {
         if (destino.classList.contains('movimiento-posible')) {
+            // Cambiar el temporizador al mover
+            this.cambiarTemporizador();
             const filaOrigen = parseInt(origen.dataset.fila);
             const columnaOrigen = parseInt(origen.dataset.columna);
             const filaDestino = parseInt(destino.dataset.fila);
@@ -153,6 +163,56 @@ class Ajedrez {
             const casillaPosible = this.tablero.children[f * 8 + c];
             casillaPosible.classList.add('movimiento-posible');
         });
+    }
+    iniciarTemporizador() {
+        this.temporizador = setInterval(() => {
+            this.tiempoRestante[this.turno]--;
+            this.actualizarVisualizacionTemporizador();
+            
+            if (this.tiempoRestante[this.turno] <= 0) {
+                this.finalizarPartidaPorTiempo();
+            }
+        }, 1000);
+    }
+
+    cambiarTemporizador() {
+        // No es necesario detener/reiniciar el intervalo
+        // Solo cambiamos el turno y el temporizador seguirá
+        // descontando del jugador correcto
+    }
+
+    reiniciarTemporizador() {
+        clearInterval(this.temporizador);
+        this.tiempoRestante = {
+            blancas: this.tiempoInicial,
+            negras: this.tiempoInicial
+        };
+        this.actualizarVisualizacionTemporizador();
+        this.iniciarTemporizador();
+    }
+
+    actualizarVisualizacionTemporizador() {
+        const formatearTiempo = (segundos) => {
+            const minutos = Math.floor(segundos / 60);
+            const segs = segundos % 60;
+            return `${minutos.toString().padStart(2, '0')}:${segs.toString().padStart(2, '0')}`;
+        };
+
+        document.getElementById('tiempoBlancas').textContent = 
+            formatearTiempo(this.tiempoRestante.blancas);
+        document.getElementById('tiempoNegras').textContent = 
+            formatearTiempo(this.tiempoRestante.negras);
+    }
+
+    finalizarPartidaPorTiempo() {
+        clearInterval(this.temporizador);
+        const ganador = this.turno === 'blancas' ? 'Negras' : 'Blancas';
+        alert(`¡Tiempo agotado! Ganan las ${ganador}`);
+        this.reiniciarTemporizador();
+        this.tablero.innerHTML = '';
+        this.inicializarTablero();
+        this.turno = 'blancas';
+        this.actualizarTurno();
     }
 }
 
