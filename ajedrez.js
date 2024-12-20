@@ -34,7 +34,16 @@ class Ajedrez {
                 casilla.className = `casilla ${(fila + columna) % 2 === 0 ? 'clara' : 'oscura'}`;
                 casilla.dataset.fila = fila;
                 casilla.dataset.columna = columna;
-                casilla.textContent = configuracion[fila][columna];
+                const pieza = configuracion[fila][columna];
+                if (pieza) {
+                    const esNegra = '♚♛♜♝♞♟'.includes(pieza);
+                    const contenedorPieza = document.createElement('span');
+                    contenedorPieza.textContent = pieza;
+                    if (esNegra) {
+                        contenedorPieza.className = 'pieza-negra';
+                    }
+                    casilla.appendChild(contenedorPieza);
+                }
                 this.tablero.appendChild(casilla);
             }
         }

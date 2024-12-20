@@ -42,24 +42,20 @@ header {
     background-color: #45a049;
 }
 
-.tablet-mode .tablero {
+.tablet-mode .pieza-negra {
     transform: rotate(180deg);
 }
 
-.tablet-mode .negras-rotado {
+.tablet-mode .info-jugador-negro {
     transform: rotate(180deg);
 }
 
-.tablet-mode .temporizadores {
+.info-jugador-negro, .info-jugador-blanco {
+    display: flex;
     flex-direction: column;
-}
-
-.tablet-mode .temporizador:last-child {
-    transform: rotate(180deg);
-}
-
-.tablet-mode #piezasCapturadasNegras {
-    transform: rotate(180deg);
+    align-items: center;
+    gap: 10px;
+    padding: 10px;
 }
 
 .tablet-mode #turno.turno-negras {
