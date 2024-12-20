@@ -1,7 +1,7 @@
 const translations = {
     title: "Ajedrez por la Paz Mundial",
     rotate_board: "Rotar tablero",
-    new_game: "Nueva partida",
+    new_game: "Nueva partida", 
     turn: "Turno",
     whites: "Blancas",
     blacks: "Negras",
