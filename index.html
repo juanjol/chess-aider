@@ -36,20 +36,20 @@
     
     <main>
         <div id="configuracionInicial" class="configuracion-inicial">
-            <h2>Configuración de la Partida</h2>
+            <h2 data-i18n="game_config">Game Configuration</h2>
             <div class="config-jugador">
-                <label for="nombreBlancas">Jugador Blancas:</label>
-                <input type="text" id="nombreBlancas" value="Jugador 1">
-                <label for="tiempoBlancas">Tiempo (minutos):</label>
+                <label for="nombreBlancas" data-i18n="player_white">White Player:</label>
+                <input type="text" id="nombreBlancas" data-i18n-value="player_1" value="Player 1">
+                <label for="tiempoBlancas" data-i18n="time_minutes">Time (minutes):</label>
                 <input type="number" id="tiempoBlancas" value="10" min="1" max="60">
             </div>
             <div class="config-jugador">
-                <label for="nombreNegras">Jugador Negras:</label>
-                <input type="text" id="nombreNegras" value="Jugador 2">
-                <label for="tiempoNegras">Tiempo (minutos):</label>
+                <label for="nombreNegras" data-i18n="player_black">Black Player:</label>
+                <input type="text" id="nombreNegras" data-i18n-value="player_2" value="Player 2">
+                <label for="tiempoNegras" data-i18n="time_minutes">Time (minutes):</label>
                 <input type="number" id="tiempoNegras" value="10" min="1" max="60">
             </div>
-            <button id="comenzarPartida">Comenzar Partida</button>
+            <button id="comenzarPartida" data-i18n="start_game">Start Game</button>
         </div>
         <div id="contenedorJuego" class="contenedor-juego" style="display: none;">
             <div class="info-jugador-blanco">
@@ -91,6 +91,25 @@
         <p>Creado con ♥ para un mundo mejor</p>
     </footer>
 
+    <script type="module">
+        import i18n from './translations/i18n.js';
+        
+        // Inicializar i18n
+        document.addEventListener('DOMContentLoaded', async () => {
+            // Cargar el idioma del navegador o español por defecto
+            const userLang = navigator.language.split('-')[0];
+            const initialLang = ['en', 'es', 'fr', 'de'].includes(userLang) ? userLang : 'es';
+            
+            // Establecer el idioma inicial
+            await i18n.setLanguage(initialLang);
+            document.getElementById('languageSelect').value = initialLang;
+            
+            // Manejar cambios de idioma
+            document.getElementById('languageSelect').addEventListener('change', (e) => {
+                i18n.setLanguage(e.target.value);
+            });
+        });
+    </script>
     <script src="movimientos.js"></script>
     <script src="ajedrez.js"></script>
 </body>

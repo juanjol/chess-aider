@@ -16,7 +16,9 @@ const translations = {
     footer_text: "Erstellt mit ♥ für eine bessere Welt",
     player: "Spieler",
     time_remaining: "Verbleibende Zeit",
-    captured_pieces: "Geschlagene Figuren"
+    captured_pieces: "Geschlagene Figuren",
+    player_1: "Spieler 1",
+    player_2: "Spieler 2"
 };
 
 export default translations;

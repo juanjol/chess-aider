@@ -35,9 +35,24 @@ class I18n {
         this.observers.push(callback);
     }
 
+    // Update all translatable elements
+    updateTranslations() {
+        document.querySelectorAll('[data-i18n]').forEach(element => {
+            const key = element.getAttribute('data-i18n');
+            element.textContent = this.translate(key);
+        });
+
+        // Update input values that have data-i18n-value
+        document.querySelectorAll('[data-i18n-value]').forEach(element => {
+            const key = element.getAttribute('data-i18n-value');
+            element.value = this.translate(key);
+        });
+    }
+
     // Notify all observers of language change
     notifyObservers() {
         this.observers.forEach(callback => callback());
+        this.updateTranslations();
     }
 }
 

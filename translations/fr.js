@@ -16,7 +16,9 @@ const translations = {
     footer_text: "Créé avec ♥ pour un monde meilleur",
     player: "Joueur",
     time_remaining: "Temps restant",
-    captured_pieces: "Pièces capturées"
+    captured_pieces: "Pièces capturées",
+    player_1: "Joueur 1",
+    player_2: "Joueur 2"
 };
 
 export default translations;
