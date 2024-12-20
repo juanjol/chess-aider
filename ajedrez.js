@@ -10,6 +10,7 @@ class Ajedrez {
             blancas: '',
             negras: ''
         };
+        this.juegoTerminado = false;
     }
 
     inicializarTablero() {
@@ -196,6 +197,10 @@ class Ajedrez {
                 return;
             }
 
+            // Ocultar avisos al mover
+            document.getElementById('avisoJaque').style.display = 'none';
+            document.getElementById('avisoMate').style.display = 'none';
+
             // Cambiar el temporizador al mover
             this.cambiarTemporizador();
             
@@ -344,12 +349,7 @@ class Ajedrez {
             casillaPosible.classList.add('movimiento-posible');
         });
 
-        // Si es el turno correcto y el rey está en jaque, mostrar una alerta
-        if ((this.turno === 'blancas' && esBlanca) || (this.turno === 'negras' && !esBlanca)) {
-            if (MovimientosPieza.estaEnJaque(this.matrizTablero, esBlanca)) {
-                alert('¡Estás en jaque!');
-            }
-        }
+        this.actualizarAvisos();
     }
     iniciarTemporizador() {
         if (this.temporizador) {
@@ -418,3 +418,23 @@ class Ajedrez {
 document.addEventListener('DOMContentLoaded', () => {
     new Ajedrez();
 });
+    actualizarAvisos() {
+        const esBlanca = this.turno === 'blancas';
+        const avisoJaque = document.getElementById('avisoJaque');
+        const avisoMate = document.getElementById('avisoMate');
+        
+        // Ocultar ambos avisos inicialmente
+        avisoJaque.style.display = 'none';
+        avisoMate.style.display = 'none';
+
+        if (this.juegoTerminado) return;
+
+        if (MovimientosPieza.estaEnJaque(this.matrizTablero, esBlanca)) {
+            if (this.esJaqueMate()) {
+                avisoMate.style.display = 'block';
+                this.juegoTerminado = true;
+            } else {
+                avisoJaque.style.display = 'block';
+            }
+        }
+    }
