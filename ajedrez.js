@@ -435,8 +435,8 @@ class Ajedrez {
 
         tiempoBlancasElement.textContent = formatearTiempo(this.tiempoRestante.blancas);
         tiempoNegrasElement.textContent = formatearTiempo(this.tiempoRestante.negras);
-        nombreBlancasElement.textContent = `${this.nombreJugadores.blancas}:`;
-        nombreNegrasElement.textContent = `${this.nombreJugadores.negras}:`;
+        nombreBlancasElement.textContent = `${this.nombreJugadores.blancas} (♔♕♖♗♘♙):`;
+        nombreNegrasElement.textContent = `${this.nombreJugadores.negras} (♚♛♜♝♞♟):`;
     }
 
     finalizarPartidaPorTiempo() {
