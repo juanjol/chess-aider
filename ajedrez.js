@@ -219,15 +219,24 @@ class Ajedrez {
             destino.textContent = origen.textContent;
             origen.textContent = '';
             
+            // Verificar si el movimiento pone en jaque al oponente
+            const esBlancaOponente = this.turno === 'negras';
+            if (MovimientosPieza.estaEnJaque(this.matrizTablero, esBlancaOponente)) {
+                if (this.esJaqueMate()) {
+                    document.getElementById('avisoMate').style.display = 'block';
+                    const ganador = this.turno === 'blancas' ? 'Blancas' : 'Negras';
+                    setTimeout(() => alert(`¡Jaque Mate! Ganan las ${ganador}`), 100);
+                    this.juegoTerminado = true;
+                } else {
+                    document.getElementById('avisoJaque').style.display = 'block';
+                }
+            } else {
+                document.getElementById('avisoJaque').style.display = 'none';
+                document.getElementById('avisoMate').style.display = 'none';
+            }
+
             this.turno = this.turno === 'blancas' ? 'negras' : 'blancas';
             this.actualizarTurno();
-
-            // Verificar jaque mate después del movimiento
-            if (this.esJaqueMate()) {
-                const ganador = this.turno === 'blancas' ? 'Negras' : 'Blancas';
-                alert(`¡Jaque Mate! Ganan las ${ganador}`);
-                this.reiniciarJuego();
-            }
         }
     }
 
@@ -348,8 +357,6 @@ class Ajedrez {
             const casillaPosible = this.tablero.children[f * 8 + c];
             casillaPosible.classList.add('movimiento-posible');
         });
-
-        this.actualizarAvisos();
     }
     iniciarTemporizador() {
         if (this.temporizador) {
@@ -411,26 +418,6 @@ class Ajedrez {
         this.inicializarTablero();
         this.turno = 'blancas';
         this.actualizarTurno();
-    }
-    actualizarAvisos() {
-        const esBlanca = this.turno === 'blancas';
-        const avisoJaque = document.getElementById('avisoJaque');
-        const avisoMate = document.getElementById('avisoMate');
-        
-        // Ocultar ambos avisos inicialmente
-        avisoJaque.style.display = 'none';
-        avisoMate.style.display = 'none';
-
-        if (this.juegoTerminado) return;
-
-        if (MovimientosPieza.estaEnJaque(this.matrizTablero, esBlanca)) {
-            if (this.esJaqueMate()) {
-                avisoMate.style.display = 'block';
-                this.juegoTerminado = true;
-            } else {
-                avisoJaque.style.display = 'block';
-            }
-        }
     }
 }
 
