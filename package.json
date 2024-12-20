@@ -1,0 +1,12 @@
+{
+  "name": "chess-for-peace",
+  "version": "1.0.0",
+  "description": "Chess game for world peace",
+  "scripts": {
+    "build": "mkdir -p dist && cp -r *.html *.js *.css translations dist/",
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "serve": "^14.0.0"
+  }
+}
