@@ -3,12 +3,13 @@ class Ajedrez {
         this.tablero = document.getElementById('tablero');
         this.turno = 'blancas';
         this.seleccionada = null;
+        this.matrizTablero = Array(8).fill().map(() => Array(8).fill(''));
         this.inicializarTablero();
         this.configurarEventos();
+        this.piezasCapturadas = { blancas: [], negras: [] };
     }
 
     inicializarTablero() {
-        // Configuración inicial de piezas
         const configuracion = [
             ['♜', '♞', '♝', '♛', '♚', '♝', '♞', '♜'],
             ['♟', '♟', '♟', '♟', '♟', '♟', '♟', '♟'],
@@ -19,6 +20,8 @@ class Ajedrez {
             ['♙', '♙', '♙', '♙', '♙', '♙', '♙', '♙'],
             ['♖', '♘', '♗', '♕', '♔', '♗', '♘', '♖']
         ];
+
+        this.matrizTablero = JSON.parse(JSON.stringify(configuracion));
 
         for (let fila = 0; fila < 8; fila++) {
             for (let columna = 0; columna < 8; columna++) {
@@ -77,11 +80,34 @@ class Ajedrez {
 
     moverPieza(origen, destino) {
         if (destino.classList.contains('movimiento-posible')) {
+            const filaOrigen = parseInt(origen.dataset.fila);
+            const columnaOrigen = parseInt(origen.dataset.columna);
+            const filaDestino = parseInt(destino.dataset.fila);
+            const columnaDestino = parseInt(destino.dataset.columna);
+            
+            // Capturar pieza si existe
+            if (destino.textContent) {
+                const piezaCapturada = destino.textContent;
+                const color = this.turno === 'blancas' ? 'blancas' : 'negras';
+                this.piezasCapturadas[color].push(piezaCapturada);
+                this.actualizarPiezasCapturadas();
+            }
+            
+            // Actualizar matriz y DOM
+            this.matrizTablero[filaDestino][columnaDestino] = this.matrizTablero[filaOrigen][columnaOrigen];
+            this.matrizTablero[filaOrigen][columnaOrigen] = '';
+            
             destino.textContent = origen.textContent;
             origen.textContent = '';
+            
             this.turno = this.turno === 'blancas' ? 'negras' : 'blancas';
             this.actualizarTurno();
         }
+    }
+
+    actualizarPiezasCapturadas() {
+        // Implementar visualización de piezas capturadas
+        console.log('Piezas capturadas:', this.piezasCapturadas);
     }
 
     actualizarTurno() {
@@ -89,27 +115,44 @@ class Ajedrez {
     }
 
     mostrarMovimientosPosibles(casilla) {
-        // Implementación básica de movimientos posibles
-        // Esto se puede expandir para incluir las reglas específicas de cada pieza
         const fila = parseInt(casilla.dataset.fila);
         const columna = parseInt(casilla.dataset.columna);
+        const pieza = this.matrizTablero[fila][columna];
+        const esBlanca = '♔♕♖♗♘♙'.includes(pieza);
         
-        // Ejemplo simple: mostrar casillas adyacentes como movimientos posibles
-        for (let i = -1; i <= 1; i++) {
-            for (let j = -1; j <= 1; j++) {
-                if (i === 0 && j === 0) continue;
-                
-                const nuevaFila = fila + i;
-                const nuevaColumna = columna + j;
-                
-                if (nuevaFila >= 0 && nuevaFila < 8 && nuevaColumna >= 0 && nuevaColumna < 8) {
-                    const casillaPosible = this.tablero.children[nuevaFila * 8 + nuevaColumna];
-                    if (!casillaPosible.textContent) {
-                        casillaPosible.classList.add('movimiento-posible');
-                    }
-                }
-            }
+        let movimientos = [];
+        
+        switch (pieza) {
+            case '♙':
+            case '♟':
+                movimientos = MovimientosPieza.obtenerMovimientosPeon(fila, columna, esBlanca, this.matrizTablero);
+                break;
+            case '♖':
+            case '♜':
+                movimientos = MovimientosPieza.obtenerMovimientosTorre(fila, columna, esBlanca, this.matrizTablero);
+                break;
+            case '♗':
+            case '♝':
+                movimientos = MovimientosPieza.obtenerMovimientosAlfil(fila, columna, esBlanca, this.matrizTablero);
+                break;
+            case '♘':
+            case '♞':
+                movimientos = MovimientosPieza.obtenerMovimientosCaballo(fila, columna, esBlanca, this.matrizTablero);
+                break;
+            case '♕':
+            case '♛':
+                movimientos = MovimientosPieza.obtenerMovimientosReina(fila, columna, esBlanca, this.matrizTablero);
+                break;
+            case '♔':
+            case '♚':
+                movimientos = MovimientosPieza.obtenerMovimientosRey(fila, columna, esBlanca, this.matrizTablero);
+                break;
         }
+
+        movimientos.forEach(([f, c]) => {
+            const casillaPosible = this.tablero.children[f * 8 + c];
+            casillaPosible.classList.add('movimiento-posible');
+        });
     }
 }
 
