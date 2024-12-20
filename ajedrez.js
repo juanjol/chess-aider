@@ -13,6 +13,10 @@ class Ajedrez {
         };
         this.juegoTerminado = false;
         this.configurarPanelControl();
+        
+        // Marcar el turno inicial
+        const infoBlancas = document.querySelector('.info-jugador-blanco');
+        infoBlancas.classList.add('turno-activo');
     }
 
     configurarPanelControl() {
