@@ -386,6 +386,13 @@ class Ajedrez {
         const turnoElement = document.getElementById('turno');
         turnoElement.textContent = `Turno: ${this.turno.charAt(0).toUpperCase() + this.turno.slice(1)}`;
         turnoElement.className = this.turno === 'negras' ? 'turno-negras' : '';
+        
+        // Actualizar bordes de los contenedores de información
+        const infoBlancas = document.querySelector('.info-jugador-blanco');
+        const infoNegras = document.querySelector('.info-jugador-negro');
+        
+        infoBlancas.classList.toggle('turno-activo', this.turno === 'blancas');
+        infoNegras.classList.toggle('turno-activo', this.turno === 'negras');
     }
 
     mostrarMovimientosPosibles(casilla) {
