@@ -4,6 +4,9 @@ class I18n {
         this.currentLanguage = 'en';
         this.translations = {};
         this.observers = [];
+        
+        // Cargar inglés por defecto
+        this.loadTranslations('en');
     }
 
     // Load translations for a specific language
