@@ -44,9 +44,8 @@ header {
     cursor: grab;
 }
 
-.arrastrando {
+.pieza-arrastrada {
     cursor: grabbing;
-    opacity: 0.6;
     position: fixed;
     pointer-events: none;
     z-index: 1000;

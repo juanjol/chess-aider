@@ -55,10 +55,15 @@ class Ajedrez {
             const esNegra = '♚♛♜♝♞♟'.includes(pieza);
 
             if ((this.turno === 'blancas' && esBlanca) || (this.turno === 'negras' && esNegra)) {
-                piezaArrastrada = casilla;
+                const pieza = document.createElement('div');
+                pieza.textContent = casilla.textContent;
+                pieza.className = 'pieza-arrastrada';
+                document.body.appendChild(pieza);
+                
+                piezaArrastrada = pieza;
                 casillaOrigen = casilla;
                 this.seleccionarPieza(casilla);
-                casilla.classList.add('arrastrando');
+                casilla.style.opacity = '0.3';
             }
         };
 
@@ -79,10 +84,11 @@ class Ajedrez {
                 this.moverPieza(casillaOrigen, casilla);
             }
 
-            piezaArrastrada.classList.remove('arrastrando');
-            piezaArrastrada.style.left = '';
-            piezaArrastrada.style.top = '';
-            piezaArrastrada = null;
+            if (piezaArrastrada) {
+                piezaArrastrada.remove();
+                casillaOrigen.style.opacity = '1';
+                piezaArrastrada = null;
+            }
             casillaOrigen = null;
             this.limpiarSeleccion();
         };
