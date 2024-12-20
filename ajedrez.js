@@ -2,6 +2,7 @@ class Ajedrez {
     constructor() {
         this.tablero = document.getElementById('tablero');
         this.turno = 'blancas';
+        this.tabletMode = false;
         this.seleccionada = null;
         this.matrizTablero = Array(8).fill().map(() => Array(8).fill(''));
         this.configurarEventosIniciales();
@@ -40,6 +41,13 @@ class Ajedrez {
     }
 
     configurarEventosIniciales() {
+        document.getElementById('tabletMode').addEventListener('click', () => {
+            this.tabletMode = !this.tabletMode;
+            document.body.classList.toggle('tablet-mode', this.tabletMode);
+            document.getElementById('tabletMode').textContent = 
+                this.tabletMode ? 'Modo Normal' : 'Modo Tablet';
+        });
+
         document.getElementById('comenzarPartida').addEventListener('click', () => {
             // Obtener configuración
             this.nombreJugadores.blancas = document.getElementById('nombreBlancas').value;
@@ -332,7 +340,9 @@ class Ajedrez {
     }
 
     actualizarTurno() {
-        document.getElementById('turno').textContent = `Turno: ${this.turno.charAt(0).toUpperCase() + this.turno.slice(1)}`;
+        const turnoElement = document.getElementById('turno');
+        turnoElement.textContent = `Turno: ${this.turno.charAt(0).toUpperCase() + this.turno.slice(1)}`;
+        turnoElement.className = this.turno === 'negras' ? 'turno-negras' : '';
     }
 
     mostrarMovimientosPosibles(casilla) {
