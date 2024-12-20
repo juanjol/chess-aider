@@ -9,11 +9,20 @@
 <body>
     <div id="panel-control" class="panel-control">
         <button class="toggle-button">☰</button>
-        <button id="tabletMode" class="mode-button" title="Cambiar orientación del tablero">
-            <span class="icon">⟳</span>
-        </button>
-        <button id="reiniciar" class="mode-button" style="display: none;">Nueva Partida</button>
-        <div id="turno">Turno: Blancas</div>
+        <div class="menu-content">
+            <button id="tabletMode" class="menu-button" title="Cambiar orientación del tablero">
+                <span class="icon">⟳</span>
+                <span class="text">Rotar tablero</span>
+            </button>
+            <button id="reiniciar" class="menu-button" style="display: none;">
+                <span class="icon">↺</span>
+                <span class="text">Nueva partida</span>
+            </button>
+            <div id="turno" class="menu-item">
+                <span class="icon">♟</span>
+                <span class="text">Turno: Blancas</span>
+            </div>
+        </div>
     </div>
     
     <main>
