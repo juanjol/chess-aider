@@ -115,8 +115,10 @@ class Ajedrez {
             e.preventDefault();
             
             // Actualizar la posición de la pieza arrastrada
-            piezaArrastrada.style.left = e.clientX + 'px';
-            piezaArrastrada.style.top = e.clientY + 'px';
+            const x = e.clientX;
+            const y = e.clientY;
+            piezaArrastrada.style.left = x + 'px';
+            piezaArrastrada.style.top = y + 'px';
         };
 
         const manejarFinDrag = (e) => {

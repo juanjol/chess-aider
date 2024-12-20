@@ -93,6 +93,7 @@ body {
     pointer-events: none;
     z-index: 1000;
     font-size: 45px;
+    transform: translate(-50%, -50%);
 }
 
 .tablet-mode .pieza-arrastrada {
