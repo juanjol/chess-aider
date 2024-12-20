@@ -66,8 +66,9 @@ body {
 .tablero {
     display: grid;
     grid-template-columns: repeat(8, 1fr);
-    width: 95vh;
-    height: 95vh;
+    width: min(95vh, 95vw);
+    height: min(95vh, 95vw);
+    aspect-ratio: 1/1;
     border: 10px solid var(--borde);
     box-shadow: 0 0 20px rgba(0,0,0,0.3);
 }
