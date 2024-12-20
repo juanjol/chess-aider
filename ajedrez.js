@@ -118,7 +118,7 @@ class Ajedrez {
 
         const manejarInicioDrag = (e) => {
             const casilla = e.target.closest('.casilla');
-            if (!casilla) return;
+            if (!casilla || !casilla.firstChild) return;
 
             const piezaTexto = casilla.textContent;
             const esBlanca = '♔♕♖♗♘♙'.includes(piezaTexto);
@@ -133,7 +133,12 @@ class Ajedrez {
                 piezaArrastrada = piezaElement;
                 casillaOrigen = casilla;
                 this.seleccionarPieza(casilla);
-                casilla.style.opacity = '0.3';
+                casilla.firstChild.style.opacity = '0.3';
+                
+                // Actualizar posición inicial
+                const rect = casilla.getBoundingClientRect();
+                piezaElement.style.left = (e.clientX) + 'px';
+                piezaElement.style.top = (e.clientY) + 'px';
             }
         };
 
@@ -142,23 +147,23 @@ class Ajedrez {
             e.preventDefault();
             
             // Actualizar la posición de la pieza arrastrada
-            const x = e.clientX;
-            const y = e.clientY;
-            piezaArrastrada.style.left = x + 'px';
-            piezaArrastrada.style.top = y + 'px';
+            piezaArrastrada.style.left = (e.clientX) + 'px';
+            piezaArrastrada.style.top = (e.clientY) + 'px';
         };
 
         const manejarFinDrag = (e) => {
             if (!piezaArrastrada) return;
 
-            const casilla = e.target.closest('.casilla');
+            const casilla = document.elementFromPoint(e.clientX, e.clientY)?.closest('.casilla');
             if (casilla && casilla !== casillaOrigen) {
                 this.moverPieza(casillaOrigen, casilla);
             }
 
             if (piezaArrastrada) {
                 piezaArrastrada.remove();
-                casillaOrigen.style.opacity = '1';
+                if (casillaOrigen?.firstChild) {
+                    casillaOrigen.firstChild.style.opacity = '1';
+                }
                 piezaArrastrada = null;
             }
             casillaOrigen = null;
