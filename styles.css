@@ -53,9 +53,6 @@ header {
 .oscura { background-color: var(--casilla-oscura); }
 
 
-.seleccionada {
-    background-color: rgba(0, 0, 0, 0.3) !important;
-}
 
 .movimiento-posible {
     position: relative;
