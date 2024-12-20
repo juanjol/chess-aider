@@ -12,6 +12,29 @@ class Ajedrez {
             negras: ''
         };
         this.juegoTerminado = false;
+        this.configurarPanelControl();
+    }
+
+    configurarPanelControl() {
+        const panel = document.getElementById('panel-control');
+        const toggleButton = panel.querySelector('.toggle-button');
+        const reiniciarButton = document.getElementById('reiniciar');
+
+        toggleButton.addEventListener('click', () => {
+            panel.classList.toggle('visible');
+        });
+
+        // Mostrar/ocultar botón de reiniciar según la vista
+        const configuracionInicial = document.getElementById('configuracionInicial');
+        const observer = new MutationObserver((mutations) => {
+            mutations.forEach((mutation) => {
+                if (mutation.attributeName === 'style') {
+                    reiniciarButton.style.display = 
+                        configuracionInicial.style.display === 'none' ? 'block' : 'none';
+                }
+            });
+        });
+        observer.observe(configuracionInicial, { attributes: true });
     }
 
     inicializarTablero() {

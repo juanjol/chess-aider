@@ -17,17 +17,35 @@ body {
 
 .panel-control {
     position: fixed;
-    left: 20px;
-    top: 50%;
-    transform: translateY(-50%);
+    left: -200px;
+    top: 20px;
     background-color: rgba(255, 255, 255, 0.9);
     padding: 20px;
-    border-radius: 10px;
+    border-radius: 0 10px 10px 0;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
     display: flex;
     flex-direction: column;
     gap: 15px;
     z-index: 1000;
+    transition: left 0.3s ease;
+    width: 200px;
+}
+
+.panel-control.visible {
+    left: 0;
+}
+
+.panel-control .toggle-button {
+    position: absolute;
+    right: -30px;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: rgba(255, 255, 255, 0.9);
+    border: none;
+    border-radius: 0 5px 5px 0;
+    padding: 10px 5px;
+    cursor: pointer;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2);
 }
 
 .mode-button {
