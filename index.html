@@ -13,7 +13,23 @@
     </header>
     
     <main>
-        <div class="contenedor-juego">
+        <div id="configuracionInicial" class="configuracion-inicial">
+            <h2>Configuración de la Partida</h2>
+            <div class="config-jugador">
+                <label for="nombreBlancas">Jugador Blancas:</label>
+                <input type="text" id="nombreBlancas" value="Jugador 1">
+                <label for="tiempoBlancas">Tiempo (minutos):</label>
+                <input type="number" id="tiempoBlancas" value="10" min="1" max="60">
+            </div>
+            <div class="config-jugador">
+                <label for="nombreNegras">Jugador Negras:</label>
+                <input type="text" id="nombreNegras" value="Jugador 2">
+                <label for="tiempoNegras">Tiempo (minutos):</label>
+                <input type="number" id="tiempoNegras" value="10" min="1" max="60">
+            </div>
+            <button id="comenzarPartida">Comenzar Partida</button>
+        </div>
+        <div id="contenedorJuego" class="contenedor-juego" style="display: none;">
             <div id="piezasCapturadasNegras" class="piezas-capturadas"></div>
             <div id="tablero" class="tablero"></div>
             <div id="piezasCapturadasBlancas" class="piezas-capturadas"></div>

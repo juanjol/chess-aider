@@ -4,16 +4,12 @@ class Ajedrez {
         this.turno = 'blancas';
         this.seleccionada = null;
         this.matrizTablero = Array(8).fill().map(() => Array(8).fill(''));
-        this.inicializarTablero();
-        this.configurarEventos();
+        this.configurarEventosIniciales();
         this.piezasCapturadas = { blancas: [], negras: [] };
-        this.tiempoInicial = 600; // 10 minutos en segundos
-        this.tiempoRestante = {
-            blancas: this.tiempoInicial,
-            negras: this.tiempoInicial
+        this.nombreJugadores = {
+            blancas: '',
+            negras: ''
         };
-        this.temporizador = null;
-        this.iniciarTemporizador();
     }
 
     inicializarTablero() {
@@ -42,7 +38,36 @@ class Ajedrez {
         }
     }
 
-    configurarEventos() {
+    configurarEventosIniciales() {
+        document.getElementById('comenzarPartida').addEventListener('click', () => {
+            // Obtener configuración
+            this.nombreJugadores.blancas = document.getElementById('nombreBlancas').value;
+            this.nombreJugadores.negras = document.getElementById('nombreNegras').value;
+            const tiempoBlancas = parseInt(document.getElementById('tiempoBlancas').value);
+            const tiempoNegras = parseInt(document.getElementById('tiempoNegras').value);
+            
+            // Configurar tiempos
+            this.tiempoInicial = {
+                blancas: tiempoBlancas * 60,
+                negras: tiempoNegras * 60
+            };
+            this.tiempoRestante = {
+                blancas: this.tiempoInicial.blancas,
+                negras: this.tiempoInicial.negras
+            };
+            
+            // Ocultar configuración y mostrar juego
+            document.getElementById('configuracionInicial').style.display = 'none';
+            document.getElementById('contenedorJuego').style.display = 'flex';
+            
+            // Iniciar juego
+            this.inicializarTablero();
+            this.configurarEventosJuego();
+            this.iniciarTemporizador();
+        });
+    }
+
+    configurarEventosJuego() {
         let piezaArrastrada = null;
         let casillaOrigen = null;
 
@@ -258,9 +283,9 @@ class Ajedrez {
         };
 
         document.getElementById('tiempoBlancas').textContent = 
-            formatearTiempo(this.tiempoRestante.blancas);
+            `${this.nombreJugadores.blancas}: ${formatearTiempo(this.tiempoRestante.blancas)}`;
         document.getElementById('tiempoNegras').textContent = 
-            formatearTiempo(this.tiempoRestante.negras);
+            `${this.nombreJugadores.negras}: ${formatearTiempo(this.tiempoRestante.negras)}`;
     }
 
     finalizarPartidaPorTiempo() {

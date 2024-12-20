@@ -136,6 +136,50 @@ button:hover {
     margin: 0 5px;
 }
 
+.configuracion-inicial {
+    background-color: var(--casilla-clara);
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0,0,0,0.3);
+    max-width: 500px;
+    margin: 20px auto;
+}
+
+.config-jugador {
+    margin: 15px 0;
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 10px;
+    align-items: center;
+}
+
+.config-jugador input {
+    padding: 8px;
+    border: 1px solid var(--borde);
+    border-radius: 4px;
+    font-size: 16px;
+}
+
+.config-jugador input[type="number"] {
+    width: 80px;
+}
+
+#comenzarPartida {
+    width: 100%;
+    margin-top: 20px;
+    padding: 15px;
+    font-size: 18px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#comenzarPartida:hover {
+    background-color: #45a049;
+}
+
 footer {
     margin-top: auto;
     padding: 20px;
