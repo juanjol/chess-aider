@@ -7,15 +7,11 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <header>
-        <div class="header-content">
-            <button id="tabletMode" class="mode-button">Modo Tablet</button>
-            <div>
-                <h1>Ajedrez por la Paz Mundial</h1>
-                <p>Uniendo personas a través del juego del pensamiento</p>
-            </div>
-        </div>
-    </header>
+    <div id="panel-control" class="panel-control">
+        <button id="tabletMode" class="mode-button">Modo Tablet</button>
+        <button id="reiniciar" class="mode-button">Nueva Partida</button>
+        <div id="turno">Turno: Blancas</div>
+    </div>
     
     <main>
         <div id="configuracionInicial" class="configuracion-inicial">
@@ -37,7 +33,7 @@
         <div id="contenedorJuego" class="contenedor-juego" style="display: none;">
             <div class="info-jugador-blanco">
                 <div class="temporizador">
-                    <span>Blancas:</span>
+                    <span>(Blancas) </span>
                     <span id="tiempoBlancas">10:00</span>
                 </div>
                 <div id="piezasCapturadasBlancas" class="piezas-capturadas"></div>
@@ -53,16 +49,12 @@
             <div class="info-jugador-negro">
                 <div id="piezasCapturadasNegras" class="piezas-capturadas"></div>
                 <div class="temporizador">
-                    <span>Negras:</span>
+                    <span>(Negras) </span>
                     <span id="tiempoNegras">10:00</span>
                 </div>
             </div>
         </div>
         
-        <div class="controles">
-            <button id="reiniciar">Nueva Partida</button>
-            <div id="turno">Turno: Blancas</div>
-        </div>
     </main>
 
     <footer>
