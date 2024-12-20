@@ -100,7 +100,7 @@ class Ajedrez {
             if ((this.turno === 'blancas' && esBlanca) || (this.turno === 'negras' && esNegra)) {
                 const pieza = document.createElement('div');
                 pieza.textContent = casilla.textContent;
-                pieza.className = 'pieza-arrastrada';
+                pieza.className = 'pieza-arrastrada' + (casilla.firstChild?.classList.contains('pieza-negra') ? ' pieza-negra' : '');
                 document.body.appendChild(pieza);
                 
                 piezaArrastrada = pieza;
