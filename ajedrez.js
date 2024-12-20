@@ -412,9 +412,6 @@ class Ajedrez {
         this.turno = 'blancas';
         this.actualizarTurno();
     }
-}
-
-// Iniciar el juego cuando se carga la página
     actualizarAvisos() {
         const esBlanca = this.turno === 'blancas';
         const avisoJaque = document.getElementById('avisoJaque');
@@ -440,18 +437,3 @@ class Ajedrez {
 document.addEventListener('DOMContentLoaded', () => {
     new Ajedrez();
 });
-        // Ocultar ambos avisos inicialmente
-        avisoJaque.style.display = 'none';
-        avisoMate.style.display = 'none';
-
-        if (this.juegoTerminado) return;
-
-        if (MovimientosPieza.estaEnJaque(this.matrizTablero, esBlanca)) {
-            if (this.esJaqueMate()) {
-                avisoMate.style.display = 'block';
-                this.juegoTerminado = true;
-            } else {
-                avisoJaque.style.display = 'block';
-            }
-        }
-    }
